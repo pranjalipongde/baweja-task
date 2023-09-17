@@ -12,16 +12,12 @@ const AddTodoForm = ({ addTaskToList }) => {
       completed: false,
     };
 
-    // Update the state immediately with the new task
-    addTaskToList(newTask);
-
-    // Clear the input field
-    setTaskTitle("");
-
     try {
       // Make a separate call to add the task to the API
-      const addedTask = await addTask(newTask);
-      console.log("Task added to the API:", addedTask);
+      const addedTask = await addTaskToList(newTask);
+
+      // Clear the input field
+      setTaskTitle("");
     } catch (error) {
       console.error("Error adding task to the API:", error);
     }
