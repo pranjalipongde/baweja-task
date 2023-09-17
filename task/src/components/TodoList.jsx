@@ -4,25 +4,30 @@ import TodoItem from "./TodoItem";
 //imported fetchTasks function
 import { fetchTasks, addTask as addTaskApi } from "../api/api";
 
-const TodoList = () => {
+const TodoList = ({ taskList, toggleTaskCompletionProp, deleteTaskProp }) => {
   //initializing the tasks state
+
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     const getTasks = async () => {
-      const tasks = await fetchTasks();
-      setTasks(tasks);
+      try {
+        const tasks = await fetchTasks();
+        console.log("Tasks from API:", tasks); // Add this line
+        setTasks(tasks);
+      } catch (error) {
+        console.error("Error fetching tasks from the API:", error);
+      }
     };
     getTasks();
   }, []);
 
   //func to add a new task to the tasks array
   const addTask = async (newTask) => {
-    // setTasks([...tasks, newTask]);
-    // Send the new task to the API
     try {
       const addedTask = await addTaskApi(newTask);
-      setTasks([...tasks, addedTask]); // Update the state with the new task
+      // Instead of appending to the existing tasks array, create a new array with the added task
+      setTasks((prevTasks) => [...prevTasks, addedTask]);
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -45,12 +50,12 @@ const TodoList = () => {
   return (
     <Box maxW="100vw" mx="auto">
       <Grid templateColumns="repeat(3, minmax(200px, 1fr))" gap={3}>
-        {tasks.map((task) => (
+        {taskList.map((task) => (
           <TodoItem
             key={task.id}
             task={task}
-            toggleTaskCompletion={toggleTaskCompletion}
-            deleteTask={deleteTask}
+            toggleTaskCompletion={toggleTaskCompletionProp}
+            deleteTask={deleteTaskProp}
           />
         ))}
       </Grid>
