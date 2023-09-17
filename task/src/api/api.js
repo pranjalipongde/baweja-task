@@ -25,25 +25,13 @@ export const addTask = async (newTask) => {
 
     const addedTask = await response.json();
     console.log("Task added successfully:", addedTask);
-    return addedTask;
+    return addedTask; // Return the added task
   } catch (error) {
     console.error("Error adding task:", error);
     throw error; // Re-throw the error for further handling in your app
   }
 };
 
-//update a task (mark as complete)
-// export const updateTask = async (taskId, updatedTask) => {
-//   const response = await fetch(`${BASE_URL}/${taskId}`, {
-//     method: "PUT",
-//     headers: {
-//       "Content-type": "application/json;",
-//     },
-//     body: JSON.stringify(updatedTask),
-//   });
-//   const updated = await response.json();
-//   return updated;
-// };
 export const toggleTaskCompletion = async (taskId, completed) => {
   try {
     const response = await fetch(`${BASE_URL}/${taskId}`, {
